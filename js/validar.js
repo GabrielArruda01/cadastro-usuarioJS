@@ -60,7 +60,6 @@ function validarSenha(senha, nomeUsuario, anoNascimento) {
     
     if (!senhaValida) {
         senhaHelp.textContent = "Senha inválida. Deve ter entre 6 e 20 caracteres, incluir pelo menos um caractere especial, um número, uma letra e não conter o nome ou ano de nascimento.";
-        senhaHelp.style.color = "red";
         passStrengthMeter.value = 0;
         return;
     }
@@ -90,6 +89,5 @@ function validarSenha(senha, nomeUsuario, anoNascimento) {
     }
 
     senhaHelp.textContent = `Nível de segurança da senha: ${nivelSenha}.`;
-    senhaHelp.style.color = "green";
     passStrengthMeter.value = meterValue;
 }
