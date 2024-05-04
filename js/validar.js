@@ -7,6 +7,7 @@ var email = document.querySelector("#inputEmail");
 var emailHelp = document.querySelector("#inputEmailHelp");
 var senha = document.querySelector("#inputPassword");
 var senhaHelp = document.querySelector("#inputPasswordHelp");
+var passStrengthMeter = document.querySelector("#passStrengthMeter");
 
 // Event listeners para os campos do formulário
 nome.addEventListener('focusout', validarNome);
@@ -60,6 +61,7 @@ function validarSenha(senha, nomeUsuario, anoNascimento) {
     if (!senhaValida) {
         senhaHelp.textContent = "Senha inválida. Deve ter entre 6 e 20 caracteres, incluir pelo menos um caractere especial, um número, uma letra e não conter o nome ou ano de nascimento.";
         senhaHelp.style.color = "red";
+        passStrengthMeter.value = 0;
         return;
     }
 
@@ -70,14 +72,24 @@ function validarSenha(senha, nomeUsuario, anoNascimento) {
     const comprimento = senha.length;
 
     let nivelSenha;
+    let meterValue = 0;
     if (comprimento < 8) {
         nivelSenha = "fraca";
+        meterValue = 5 + temCaractereEspecial + temNumero;
     } else if (comprimento < 12) {
         nivelSenha = temMaiuscula >= 1 ? "moderada" : "fraca";
+        meterValue = 10 + temCaractereEspecial + temNumero + (temMaiuscula ? 5 : 0);
     } else {
-        nivelSenha = (temCaractereEspecial > 1 && temNumero > 1 && temMaiuscula > 1) ? "forte" : "moderada";
+        if (temCaractereEspecial > 1 && temNumero > 1 && temMaiuscula > 1) {
+            nivelSenha = "forte";
+            meterValue = 25 + temCaractereEspecial + temNumero + temMaiuscula;
+        } else {
+            nivelSenha = "moderada";
+            meterValue = 15 + temCaractereEspecial + temNumero + temMaiuscula;
+        }
     }
 
     senhaHelp.textContent = `Nível de segurança da senha: ${nivelSenha}.`;
     senhaHelp.style.color = "green";
+    passStrengthMeter.value = meterValue;
 }
