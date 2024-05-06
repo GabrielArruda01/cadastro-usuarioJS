@@ -1,4 +1,4 @@
-// Criando os objetos dos elementos de texto do form
+//criando os objetos dos elementos de texto do form
 var nome = document.querySelector("#inputName");
 var nomeHelp = document.querySelector("#inputNameHelp");
 var ano = document.querySelector("#inputYear");
@@ -9,15 +9,21 @@ var senha = document.querySelector("#inputPassword");
 var senhaHelp = document.querySelector("#inputPasswordHelp");
 var passStrengthMeter = document.querySelector("#passStrengthMeter");
 
-// Event listeners para os campos do formulário
+/*declarando o evento listener para o campos de texto do form. 
+Uma vez o foco do campo inputName mude, será chamada a função validarNome*/
 nome.addEventListener('focusout', validarNome);
 ano.addEventListener('focusout', validarAnoNascimento);
 email.addEventListener('focusout', validarEmail);
 senha.addEventListener('focusout', () => validarSenha(senha.value, nome.value, ano.value));
 
-// Função para validar o nome
-function validarNome() {
-    const regexNome = /^[A-Za-z ]{7,}$/; // Permitindo espaço e exigindo mais de 6 caracteres
+/*declaração tradicional de função validarNome(e)
+'e' é o objeto do tipo evento que contém, alpem de outras propriedades, o objeto que iniciou o evento,
+neste caso o objeto 'nome'
+*/
+function validarNome(e) {
+    const regexNome = /^[A-Za-z ]{7,}$/; // Permitindo espaço e exigindo mais de 6 caracteres 
+    console.log(e); //impressão em console do objeto evento e
+    console.log(e.target.value); //impressão em console do valor do objeto 'nome' que originou o evento   
     if (!nome.value.trim().match(regexNome)) {
         nomeHelp.textContent = "O nome deve conter apenas letras e ser maior que 6 caracteres.";
         nomeHelp.style.color = "red";
@@ -29,7 +35,7 @@ function validarNome() {
 
 // Função para validar o ano de nascimento
 function validarAnoNascimento() {
-    const anoAtual = new Date().getFullYear();
+    const anoAtual = 2022;
     const regexAno = /^(19|20)\d{2}$/;
     const anoValor = ano.value.trim();
     if (!anoValor.match(regexAno) || parseInt(anoValor) < 1900 || parseInt(anoValor) > anoAtual) {
@@ -59,7 +65,7 @@ function validarSenha(senha, nomeUsuario, anoNascimento) {
     const senhaValida = regexSenhaBasica.test(senha) && !senha.toLowerCase().includes(nomeUsuario.toLowerCase()) && !senha.includes(anoNascimento);
     
     if (!senhaValida) {
-        senhaHelp.textContent = "Senha inválida. Deve ter entre 6 e 20 caracteres, incluir pelo menos um caractere especial, um número, uma letra e não conter o nome ou ano de nascimento.";
+        senhaHelp.textContent = "Senha inválida.";
         passStrengthMeter.value = 0;
         return;
     }
